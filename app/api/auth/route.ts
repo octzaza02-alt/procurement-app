@@ -23,6 +23,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  clearSession()
+  await clearSession()
   return ok({ message: 'ออกจากระบบแล้ว' })
 }
