@@ -1,7 +1,7 @@
 import { serverClient } from '@/lib/supabase'
 import { getSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import LoginClient from './LoginClient'
+import LoginClient from '@/app/login/LoginClient'
 
 export default async function LoginPage() {
   const session = await getSession()
