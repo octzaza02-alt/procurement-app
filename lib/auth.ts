@@ -16,7 +16,8 @@ export async function createSession(user: SessionUser) {
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('8h')
     .sign(secret())
-  cookies().set(COOKIE, token, {
+  const jar = await cookies()
+  jar.set(COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -27,7 +28,8 @@ export async function createSession(user: SessionUser) {
 
 export async function getSession(): Promise<SessionUser | null> {
   try {
-    const token = cookies().get(COOKIE)?.value
+    const jar   = await cookies()
+    const token = jar.get(COOKIE)?.value
     if (!token) return null
     const { payload } = await jwtVerify(token, secret())
     return payload as unknown as SessionUser
@@ -36,6 +38,7 @@ export async function getSession(): Promise<SessionUser | null> {
   }
 }
 
-export function clearSession() {
-  cookies().delete(COOKIE)
+export async function clearSession() {
+  const jar = await cookies()
+  jar.delete(COOKIE)
 }
